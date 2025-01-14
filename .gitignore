@@ -1,0 +1,38 @@
+# Ignore Maven target directory except specific wrappers
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Ignore IntelliJ files
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Ignore build files
+build/
+
+# Ignore STS and NetBeans specific files
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+
+
+# Ignore MySQL socket files
+*.sock
+
+# Ignore MySQL configuration and temporary files
+mysqlOrder/auto.cnf
+mysqlOrder/mysql_upgrade_history
+

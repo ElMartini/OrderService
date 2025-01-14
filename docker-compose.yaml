@@ -1,0 +1,13 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: orderServiceDocker
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: OrderServiceDB
+
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mysqlOrder:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
