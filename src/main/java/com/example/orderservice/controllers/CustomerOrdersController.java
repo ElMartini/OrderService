@@ -5,6 +5,7 @@ import com.example.orderservice.model.CustomerOrders;
 import com.example.orderservice.service.CustomerOrdersService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -18,26 +19,26 @@ public class CustomerOrdersController {
     @Autowired
     private CustomerOrdersService customerOrdersService;
 
-    @GetMapping("/get")
-    public List<CustomerOrders> getOrders() {
-        return this.customerOrdersService.getCustomerOrders();
+    @GetMapping("/all")
+    public ResponseEntity<List<CustomerOrders>> getCustomerOrders() {
+        List<CustomerOrders> customerOrders = customerOrdersService.getCustomerOrders();
+        return ResponseEntity.ok(customerOrders);
     }
 
     @PostMapping(value = "/add")
-    public void addProduct(@RequestBody CustomerOrders customerOrders) throws InterruptedException {
+    public void addOrder(@RequestBody CustomerOrders customerOrders) throws InterruptedException {
 
         boolean isSuccess;
         do {
             try {
+                System.out.println("1: "+customerOrders.getcID() +customerOrders.getoIDs());
                 isSuccess = customerOrdersService.createCustomerOrder(customerOrders);
             } catch (SQLException e) {
                 isSuccess = false;
-                log.info(e.toString());
             }
             if (!isSuccess)
                 Thread.sleep(500);
 
         } while (!isSuccess);
-        log.info("Success");
     }
 }

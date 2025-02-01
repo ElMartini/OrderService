@@ -2,6 +2,7 @@ package com.example.orderservice.service;
 
 import com.example.orderservice.DBUtil.DBUtil;
 import com.example.orderservice.model.Order;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
@@ -33,10 +34,11 @@ public class OrderServiceImpl implements OrderService {
 
             while (result.next()) {
                 Order order = new Order();
-                order.setOID(result.getString(1));
-                order.setPName(result.getString(2));
-                order.setOPrice(result.getDouble(3));
-                order.setOQuantity(result.getInt(4));
+                order.setoID(result.getString(1));
+                order.setpName(result.getString(2));
+                order.setpPrice(result.getDouble(3));
+                order.setpQuantity(result.getInt(4));
+                order.setoPrice(result.getDouble(5));
                 orderList.add(order);
             }
 
@@ -47,19 +49,28 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public boolean placeOrder(Order order) throws SQLException {
-        String statementQuery = "INSERT INTO orders (oID, pName, oPrice, oQuantity) VALUES (?, ?, ?, ?)";
+        String statementQuery = "INSERT INTO orders (oID, pName, pPrice, pQuantity, oPrice) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(statementQuery);
 
-        if (order.getOID() == null || order.getOID().isEmpty()) {
-            order.setOID(UUID.randomUUID().toString());
+        if (order.getoID() == null || order.getoID().isEmpty()) {
+            order.setoID(UUID.randomUUID().toString());
         }
 
-        statement.setString(1, order.getOID());
-        statement.setString(2, order.getPName());
-        statement.setDouble(3, order.getOPrice());
-        statement.setInt(4, order.getOQuantity());
+        statement.setString(1, order.getoID());
+        statement.setString(2, order.getpName());
+        statement.setDouble(3, order.getpPrice());
+        statement.setInt(4, order.getpQuantity());
+        statement.setDouble(5, order.getoPrice());
+
 
         int result = statement.executeUpdate();
         return result > 0;
+    }
+
+    public Order getOrder(String oID){
+        for (Order order: getOrders()){
+            if(order.getoID().equals(oID)) return order;
+        }
+        return null;
     }
 }
